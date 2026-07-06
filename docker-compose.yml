@@ -24,6 +24,8 @@ services:
       DB_USER:     compuuser
       DB_PASSWORD: compupass123
       PORT:        3001
+    ports:
+      - "3001:3001"        # ← เพิ่มบรรทัดนี้
     depends_on:
       db:
         condition: service_healthy
