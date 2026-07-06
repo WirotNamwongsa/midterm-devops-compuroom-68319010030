@@ -5,7 +5,7 @@
 **รายวิชา:** DevOps 30901-2008 · วิทยาลัยเทคนิคเลย
 **โจทย์:** compuroom
 
-![CI](https://github.com/<username>/midterm-devops-compuroom-68319010030/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/WirotNamwongsa/midterm-devops-compuroom-68319010030/actions/workflows/ci.yml/badge.svg)
 
 ![CD](https://github.com/WirotNamwongsa/midterm-devops-compuroom-68319010030/actions/workflows/cd.yml/badge.svg)
 
