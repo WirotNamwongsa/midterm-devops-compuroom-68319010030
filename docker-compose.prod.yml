@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       compuroom
+      POSTGRES_USER:     compuuser
+      POSTGRES_PASSWORD: compupass123
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    image: wirot/compuroom-api:latest
+    restart: unless-stopped
+    environment:
+      DB_HOST:     db
+      DB_PORT:     5432
+      DB_NAME:     compuroom
+      DB_USER:     compuuser
+      DB_PASSWORD: compupass123
+      PORT:        3001
+    depends_on:
+      - db
+
+  frontend:
+    image: wirot/compuroom-web:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
