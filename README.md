@@ -7,6 +7,8 @@
 
 ![CI](https://github.com/<username>/midterm-devops-compuroom-68319010030/actions/workflows/ci.yml/badge.svg)
 
+![CD](https://github.com/WirotNamwongsa/midterm-devops-compuroom-68319010030/actions/workflows/cd.yml/badge.svg)
+
 ระบบ CRUD สำหรับบันทึกข้อมูลเครื่องคอมพิวเตอร์ในห้องปฏิบัติการของแผนก
 สร้างด้วย Express.js + PostgreSQL + Vue 3, containerize ด้วย Docker, และมี CI Pipeline ด้วย GitHub Actions
 
