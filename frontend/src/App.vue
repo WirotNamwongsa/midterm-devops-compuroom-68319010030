@@ -66,6 +66,11 @@
           </select>
         </div>
 
+        <div class="search-box">
+          <label for="searchInput">ค้นหาด้วยชื่อ/รหัส</label>
+          <input id="searchInput" v-model="searchQuery" placeholder="พิมพ์ชื่อหรือรหัสเครื่อง" />
+        </div>
+
         <div class="tip-box">
           <h4>💡 Tip of the day</h4>
           <p>กรองสถานะเครื่องเพื่อเช็กความพร้อมก่อนเข้าเรียนหรือก่อนเปิดห้องคอมพิวเตอร์</p>
@@ -75,7 +80,8 @@
 
     <div v-if="loading" class="loading">กำลังโหลดข้อมูล...</div>
     <div v-else class="item-list">
-      <div v-for="item in computers" :key="item.id" class="item-card" :class="statusClass(item.status)">
+      <p v-if="filteredComputers.length" class="results-count">พบ {{ filteredComputers.length }} รายการ</p>
+      <div v-for="item in filteredComputers" :key="item.id" class="item-card" :class="statusClass(item.status)">
         <div class="item-info">
           <span class="status-badge">{{ item.status }}</span>
           <h3>{{ item.asset_code }} — {{ item.brand_model }}</h3>
@@ -104,10 +110,23 @@ const computers = ref([])
 const loading = ref(false)
 const filterStatus = ref('')
 const editingId = ref(null)
+const searchQuery = ref('')
 
 const totalComputers = computed(() => computers.value.length)
 const activeComputers = computed(() => computers.value.filter((item) => item.status === 'ใช้งาน').length)
 const repairComputers = computed(() => computers.value.filter((item) => item.status === 'ส่งซ่อม').length)
+const filteredComputers = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+
+  if (!query) {
+    return computers.value
+  }
+
+  return computers.value.filter((item) => {
+    const haystack = `${item.asset_code || ''} ${item.brand_model || ''} ${item.cpu || ''} ${item.room || ''}`.toLowerCase()
+    return haystack.includes(query)
+  })
+})
 
 const emptyForm = () => ({
   asset_code: '', brand_model: '', cpu: '', ram_gb: null, room: '', status: 'ใช้งาน',
@@ -353,15 +372,31 @@ onMounted(loadComputers)
   color: #e2e8f0;
 }
 
-.filter-bar {
+.filter-bar,
+.search-box {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.filter-bar label {
+.filter-bar label,
+.search-box label {
   color: #cbd5e1;
   font-size: 0.9rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.72rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(2, 6, 23, 0.7);
+  color: #f8fafc;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: #64748b;
 }
 
 .tip-box {
@@ -387,6 +422,12 @@ onMounted(loadComputers)
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+}
+
+.results-count {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
 .item-card {
